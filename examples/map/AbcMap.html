@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>AbcMap</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../src/lib/ol.css" />
+    <script type="text/javascript" src="../../src/lib/ol.js"></script>
+    <script type="text/javascript" src="../../dist/js/tmap.js"></script>
+    <style type="text/css">
+        #map
+        {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div id="map">
+    </div>
+</body>
+<script type="text/javascript">
+ var p = ol.proj.transform([117.2882028929, 31.864942016], 'EPSG:4326', 'EPSG:3857');
+    var map = new ol.Map({
+        layers: [
+             new ol.layer.Tile({
+                 source: new ol.source.AbcSLMap()
+             })
+        ],
+        target: 'map',
+        controls: ol.control.defaults({
+            attributionOptions: {
+                collapsible: false
+            }
+        }),
+        view: new ol.View({
+            center:p,
+            zoom: 12,
+            projection: 'EPSG:3857'
+        })
+    });
+</script>
+</html>
