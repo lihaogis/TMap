@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SelfMap</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../src/lib/ol.css" />
+    <script type="text/javascript" src="../../src/lib/ol.js"></script>
+    <script type="text/javascript" src="../../dist/js/tmap.js"></script>
+    <style type="text/css">
+        #map
+        {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div id="map">
+    </div>
+    <div style="position: absolute; width: 330px; background-color: #ccc; top: 20px;right: 10px;">
+    <input type="button" value="点" onclick="drawPoint()" /><input type="button" value="线"
+        onclick="drawLine()" /><input type="button" value="面" onclick="drawPolygon()" /><input
+            type="button" value="圆" onclick="drawCircle()" /><input type="button" value="矩形"
+                onclick="drawRec()" /><input type="button" value="marker聚合" onclick="addMarker()" /><input
+                    type="button" value="popup弹出 " onclick="addPopup()" />
+                </div>
+</body>
+<script type="text/javascript">
+var tmaplayer=new ol.layer.Tmap();
+    var map = new ol.Map({
+        layers: [tmaplayer],
+        target: 'map',
+        controls: ol.control.defaults({
+            attributionOptions: {
+                collapsible: false
+            }
+        }),
+        view: new ol.View({
+            center:[118.38469, 31.36633],
+            zoom: 12,
+            projection: 'EPSG:4326'
+        })
+    });
+
+
+</script>
+</html>
