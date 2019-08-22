@@ -47,6 +47,67 @@ var tmaplayer=new ol.layer.Tmap();
         })
     });
 
+var draw;
+var geometrySqlLayer = new ol.layer.Vector({
+    source: new ol.source.Vector()
+});
+var markerLayer = new ol.layer.Vector({
+    source: new ol.source.Vector()
+});
+map.addLayer(geometrySqlLayer);
+map.addLayer(markerLayer);
+
+function drawPoint() {
+    map.removeInteraction(draw);
+    geometrySqlLayer.getSource().clear();
+    draw = new ol.interaction.Draw({
+        source: geometrySqlLayer.getSource(),
+        type: ("Point")
+    });
+    map.addInteraction(draw);
+}
+
+function drawLine() {
+    map.removeInteraction(draw);
+    geometrySqlLayer.getSource().clear();
+    draw = new ol.interaction.Draw({
+        source: geometrySqlLayer.getSource(),
+        type: ("LineString")
+    });
+    map.addInteraction(draw);
+}
+
+function drawPolygon() {
+    map.removeInteraction(draw);
+    geometrySqlLayer.getSource().clear();
+    draw = new ol.interaction.Draw({
+        source: geometrySqlLayer.getSource(),
+        type: ("Polygon")
+    });
+    map.addInteraction(draw);
+}
+
+function drawCircle() {
+    map.removeInteraction(draw);
+    geometrySqlLayer.getSource().clear();
+    draw = new ol.interaction.Draw({
+        source: geometrySqlLayer.getSource(),
+        type: ("Circle")
+    });
+    map.addInteraction(draw);
+}
+
+function drawRec() {
+    map.removeInteraction(draw);
+    geometrySqlLayer.getSource().clear();
+    geometryFunction = ol.interaction.Draw.createBox();
+    draw = new ol.interaction.Draw({
+        source: geometrySqlLayer.getSource(),
+        type: ("Circle"),
+        geometryFunction: geometryFunction
+    });
+    map.addInteraction(draw);
+}
 
 </script>
 </html>
