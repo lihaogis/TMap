@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>SelfMap</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="../../src/lib/ol.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../src/lib/ol.js"></script>
     <script type="text/javascript" src="../../dist/js/tmap.js"></script>
     <style type="text/css">
-        #map
-        {
+        #map {
             position: fixed;
             top: 0;
             left: 0;
@@ -17,97 +20,229 @@
             width: 100%;
             background: transparent;
         }
+
+        .popover-content {
+            min-width: 140px;
+        }
     </style>
 </head>
+
 <body>
     <div id="map">
+        <div id="popup">
+        </div>
     </div>
-    <div style="position: absolute; width: 330px; background-color: #ccc; top: 20px;right: 10px;">
-    <input type="button" value="点" onclick="drawPoint()" /><input type="button" value="线"
-        onclick="drawLine()" /><input type="button" value="面" onclick="drawPolygon()" /><input
-            type="button" value="圆" onclick="drawCircle()" /><input type="button" value="矩形"
-                onclick="drawRec()" /><input type="button" value="marker聚合" onclick="addMarker()" /><input
-                    type="button" value="popup弹出 " onclick="addPopup()" />
-                </div>
+    <div style="position: absolute; width: 350px; background-color: #ccc; top: 20px;right: 10px;">
+        <input type="button" value="点" onclick="drawPoint()" /><input type="button" value="线"
+            onclick="drawLine()" /><input type="button" value="面" onclick="drawPolygon()" /><input type="button"
+            value="圆" onclick="drawCircle()" /><input type="button" value="矩形" onclick="drawRec()" /><input
+            type="button" value="marker聚合" onclick="addMarker()" /><input type="button" value="popup弹出 "
+            onclick="addPopup()" /><a target="_blank" href="http://61.132.128.246:8008/mtmap">详细示例参考</a>
+    </div>
 </body>
 <script type="text/javascript">
-var tmaplayer=new ol.layer.Tmap();
+var layers = [tmap.mapGroup.selfmap()];
+
+    // 创建地图
+    var view = new ol.View({
+        resolutions: [0.00274658203125, 0.001373291015625, 6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4, 8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5, 1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6],
+        projection: 'EPSG:4326',
+        center: [118.22581, 32.33685],
+        zoom: 3
+    });
+
     var map = new ol.Map({
-        layers: [tmaplayer],
-        target: 'map',
-        controls: ol.control.defaults({
-            attributionOptions: {
-                collapsible: false
-            }
+        interactions: ol.interaction.defaults({
+            doubleClickZoom: false
         }),
-        view: new ol.View({
-            center:[118.38469, 31.36633],
-            zoom: 12,
-            projection: 'EPSG:4326'
+        controls: ol.control.defaults({
+            attribution: false,
+            rotate: false,
+            zoom: false
+        }),
+        layers: layers,
+        logo: false,
+        view: view,
+        target: 'map'
+    });
+
+    var draw;
+    var geometrySqlLayer = new ol.layer.Vector({
+        source: new ol.source.Vector()
+    });
+    var markerLayer = new ol.layer.Vector({
+        source: new ol.source.Vector()
+    });
+    map.addLayer(geometrySqlLayer);
+    map.addLayer(markerLayer);
+
+    function drawPoint() {
+        map.removeInteraction(draw);
+        geometrySqlLayer.getSource().clear();
+        draw = new ol.interaction.Draw({
+            source: geometrySqlLayer.getSource(),
+            type: ("Point")
+        });
+        map.addInteraction(draw);
+    }
+
+    function drawLine() {
+        map.removeInteraction(draw);
+        geometrySqlLayer.getSource().clear();
+        draw = new ol.interaction.Draw({
+            source: geometrySqlLayer.getSource(),
+            type: ("LineString")
+        });
+        map.addInteraction(draw);
+    }
+
+    function drawPolygon() {
+        map.removeInteraction(draw);
+        geometrySqlLayer.getSource().clear();
+        draw = new ol.interaction.Draw({
+            source: geometrySqlLayer.getSource(),
+            type: ("Polygon")
+        });
+        map.addInteraction(draw);
+    }
+
+    function drawCircle() {
+        map.removeInteraction(draw);
+        geometrySqlLayer.getSource().clear();
+        draw = new ol.interaction.Draw({
+            source: geometrySqlLayer.getSource(),
+            type: ("Circle")
+        });
+        map.addInteraction(draw);
+    }
+
+    function drawRec() {
+        map.removeInteraction(draw);
+        geometrySqlLayer.getSource().clear();
+        geometryFunction = ol.interaction.Draw.createBox();
+        draw = new ol.interaction.Draw({
+            source: geometrySqlLayer.getSource(),
+            type: ("Circle"),
+            geometryFunction: geometryFunction
+        });
+        map.addInteraction(draw);
+    }
+
+    var markerStyle = new ol.style.Style({
+        image: new ol.style.Icon({
+            anchor: [0.5, 1],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'pixels',
+            src: '../../img/marker-icon.png'
         })
     });
 
-var draw;
-var geometrySqlLayer = new ol.layer.Vector({
-    source: new ol.source.Vector()
-});
-var markerLayer = new ol.layer.Vector({
-    source: new ol.source.Vector()
-});
-map.addLayer(geometrySqlLayer);
-map.addLayer(markerLayer);
-
-function drawPoint() {
-    map.removeInteraction(draw);
-    geometrySqlLayer.getSource().clear();
-    draw = new ol.interaction.Draw({
-        source: geometrySqlLayer.getSource(),
-        type: ("Point")
+    var clusters, vector;
+    var featureCount = 2000;
+    var features = new Array(featureCount);
+    var lngSpan = 6;
+    var latSpan = 7;
+    for (i = 0; i < featureCount; ++i) {
+        var lon = 114.63636220000004 + lngSpan * (Math.random() * 0.7);
+        var lat = 34.915328100000096 - latSpan * (Math.random() * 0.7);
+        var geometry = new ol.geom.Point([lon, lat]);
+        var geoText = "第" + i.toString() + "个marker";
+        var feature = new ol.Feature({
+            geometry: geometry,
+            name: geoText
+        });
+        feature.setStyle(markerStyle);
+        features[i] = feature;
+    }
+    var vectorSource = new ol.source.Vector({
+        features: features
     });
-    map.addInteraction(draw);
-}
-
-function drawLine() {
-    map.removeInteraction(draw);
-    geometrySqlLayer.getSource().clear();
-    draw = new ol.interaction.Draw({
-        source: geometrySqlLayer.getSource(),
-        type: ("LineString")
+    vector = new ol.layer.Vector({
+        source: vectorSource
     });
-    map.addInteraction(draw);
-}
-
-function drawPolygon() {
-    map.removeInteraction(draw);
-    geometrySqlLayer.getSource().clear();
-    draw = new ol.interaction.Draw({
-        source: geometrySqlLayer.getSource(),
-        type: ("Polygon")
+    var clusterSource = new ol.source.Cluster({
+        distance: 20,
+        source: vectorSource
     });
-    map.addInteraction(draw);
-}
+    function addMarker() {
+        map.removeInteraction(draw);
+        geometrySqlLayer.getSource().clear();
+        var styleCache = {};
+        clusters = new ol.layer.Vector({
+            source: clusterSource,
+            style: function (feature) {
+                var size = feature.get('features').length;
+                var d = feature.get('name');
+                var style = styleCache[size];
+                if (!style) {
+                    if (size > 1) {
+                        style = new ol.style.Style({
+                            image: new ol.style.Circle({
+                                radius: 10,
+                                stroke: new ol.style.Stroke({
+                                    color: '#fff'
+                                }),
+                                fill: new ol.style.Fill({
+                                    color: '#3399CC'
+                                })
+                            }),
+                            text: new ol.style.Text({
+                                text: size.toString(),
+                                fill: new ol.style.Fill({
+                                    color: '#fff'
+                                })
+                            })
+                        });
+                    }
+                    else {
+                        style = markerStyle;
+                    }
+                    styleCache[size] = style;
+                }
+                return style;
+            }
+        });
+        map.addLayer(clusters);
+    }
 
-function drawCircle() {
-    map.removeInteraction(draw);
-    geometrySqlLayer.getSource().clear();
-    draw = new ol.interaction.Draw({
-        source: geometrySqlLayer.getSource(),
-        type: ("Circle")
-    });
-    map.addInteraction(draw);
-}
+    var element;
+    function addPopup() {
+        map.removeInteraction(draw);
+        geometrySqlLayer.getSource().clear();
+        map.removeLayer(clusters);
+        map.addLayer(vector);
+        element = document.getElementById('popup');
+        var popup = new ol.Overlay({
+            element: element,
+            positioning: 'bottom-center',
+            stopEvent: false,
+            offset: [0, 0]
+        });
+        map.addOverlay(popup);
 
-function drawRec() {
-    map.removeInteraction(draw);
-    geometrySqlLayer.getSource().clear();
-    geometryFunction = ol.interaction.Draw.createBox();
-    draw = new ol.interaction.Draw({
-        source: geometrySqlLayer.getSource(),
-        type: ("Circle"),
-        geometryFunction: geometryFunction
-    });
-    map.addInteraction(draw);
-}
+        map.on('click', function (evt) {
+            $(element).popover('destroy');
+            var feature = map.forEachFeatureAtPixel(evt.pixel,
+                function (feature) {
+                    return feature;
+                });
+            if (feature) {
+                var coordinates = feature.getGeometry().getCoordinates();
+                popup.setPosition(coordinates);
+                $(".popover-content").html("");
+                $(element).popover({
+                    'placement': 'top',
+                    'html': true,
+                    'animation': false,
+                    'content': feature.get('name')
+                });
+                $(element).popover('show');
+            } else {
+                $(element).popover('destroy');
+            }
+        });
+    }
 
 </script>
+
 </html>

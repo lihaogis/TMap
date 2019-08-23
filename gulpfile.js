@@ -8,10 +8,10 @@ var obfuscate = require('gulp-obfuscate');
 // 在命令行使用 gulp script 启动此任务
 gulp.task('jscompress', function() {
     // 1. 找到文件
-   return gulp.src('src/source/TMap.js')
+   return gulp.src(['src/source/TMap.js','src/source/TMapSource.js','src/source/TMapGroup.js'])
     // 2. 压缩文件
         .pipe(uglify())
-        .pipe(obfuscate())
+        //.pipe(obfuscate())
         // 3. 另存压缩后的文件
 		.pipe(concat('tmap'+".js"))
         .pipe(gulp.dest('dist/js'));

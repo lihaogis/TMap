@@ -1,10 +1,7 @@
-var tmap = {
-    version: '1.0.0',
-    author: 'lhgis',
-    ilogo: ""
+tmap.mapGroup = function (opt_options) {
 }
 
-tmap.selfmap = function (opt_options) {
+tmap.mapGroup.selfmap = function (opt_options) {
     return new ol.layer.Tile({
         extent: [117.79274539171578, 32.05599257605633, 118.54352794005754, 32.63968697076984],
         source: new ol.source.TileWMS({

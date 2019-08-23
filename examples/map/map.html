@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../src/lib/ol.css" />
+    <script type="text/javascript" src="../../src/lib/ol-debug.js"></script>
+    <style type="text/css">
+        #map {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+    </div>
+</body>
+<script type="text/javascript">
+
+    var layers = [
+        new ol.layer.Tile({
+            extent: [117.40858989047551, 30.59083763382801, 118.79536378993869, 31.59119247584693],
+            source: new ol.source.TileWMS({
+                url: 'http://61.132.128.246:66/geowebcache/service/wms',
+                params: {
+                    'LAYERS': 'WHJJZC2',
+                    'FORMAT': 'image/png',
+                    'SRS': 'EPSG:4326',
+                    'VERSION': '1.1.1'
+                },
+                tileGrid: new ol.tilegrid.TileGrid({
+                    //resolution和conf.xml中保持一致    
+                    resolutions: [0.003906250072865501, 0.0019531250364327505, 9.76562518216374E-4, 4.882812591081883E-4, 2.4414062955409386E-4, 1.220703147770468E-4, 6.10351573885234E-5, 3.05175786942617E-5, 1.525878934713085E-5, 7.629394673565438E-6, 3.814697336782719E-6, 1.907348668391357E-6, 9.536743341956785E-7],
+                    tileSize: [256, 256],
+                    origin: [117.0, 32.0]
+                })
+            })
+        })
+    ];
+
+
+    var map = new ol.Map({
+        layers: [layers],
+        target: 'map',
+        controls: ol.control.defaults({
+            attributionOptions: {
+                collapsible: false
+            }
+        }),
+        view: new ol.View({
+            resolutions: [0.003906250072865501, 0.0019531250364327505, 9.76562518216374E-4, 4.882812591081883E-4, 2.4414062955409386E-4, 1.220703147770468E-4, 6.10351573885234E-5, 3.05175786942617E-5, 1.525878934713085E-5, 7.629394673565438E-6, 3.814697336782719E-6, 1.907348668391357E-6, 9.536743341956785E-7],
+            projection: 'EPSG:4326',
+            center: [118.38469, 31.36633],
+            zoom: 7
+        })
+    });
+</script>
+
+</html>
