@@ -11,7 +11,13 @@ tmap.source.AbcSLMap = function (opt_options) {
 
 tmap.source.AbcYXMap = function (opt_options) {
     return new ol.source.XYZ({
-        url: 'http://webrd03.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scale=1&style=8'
+        url: 'https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}'
+    });
+}
+
+tmap.source.AbcYXMapBZ = function (opt_options) {
+    return new ol.source.XYZ({
+        url: 'https://wprd04.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=8&ltype=11'
     });
 }
 
@@ -60,3 +66,4 @@ tmap.source.GGMap = function (opt_options) {
         url: 'http://www.google.cn/maps/vt?lyrs=s@716&x={x}&y={y}&z={z}'
     });
 }
+

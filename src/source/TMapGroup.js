@@ -1,6 +1,6 @@
-tmap.mapGroup = function (opt_options) {
+tmap.mapGroup = {
 }
-
+//自定义地图
 tmap.mapGroup.selfmap = function (opt_options) {
     return new ol.layer.Tile({
         extent: [117.79274539171578, 32.05599257605633, 118.54352794005754, 32.63968697076984],
@@ -19,5 +19,32 @@ tmap.mapGroup.selfmap = function (opt_options) {
                 origin: [-180.0, 90.0]
             })
         })
+    })
+}
+
+//天地图
+tmap.mapGroup.tdtmap = function (opt_options) {
+    return new ol.layer.Group({
+        layers: [
+            new ol.layer.Tile({
+                source: tmap.source.AbcYXMap()
+            }), new ol.layer.Tile({
+                source: tmap.source.AbcYXMapBZ()
+            })
+        ]
+    })
+}
+
+//高德地图
+tmap.mapGroup.abcmap = function (opt_options) {
+    return new ol.layer.Tile({
+        source: tmap.source.AbcSLMap()
+    })
+}
+
+//高德地图
+tmap.mapGroup.ggyxmap = function (opt_options) {
+    return new ol.layer.Tile({
+        source: tmap.source.GGMap()
     })
 }
