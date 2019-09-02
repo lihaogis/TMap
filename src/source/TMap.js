@@ -55,7 +55,7 @@ tmap.Map = function (mapDiv, option) {
 
     /**
      * 获取地图实例
-     * @this wol.MapViewer
+     * @this tmap.Map
      * @return {ol.Map}
      */
     this.getMap = function () {
@@ -64,7 +64,7 @@ tmap.Map = function (mapDiv, option) {
 
     /**
      * 获取图层序号值
-     * @this wol.MapViewer
+     * @this tmap.Map
      * @return {number}
      */
     this.getCurZIndex = function () {
@@ -73,7 +73,7 @@ tmap.Map = function (mapDiv, option) {
 
     /**
      * 设置图层序号值
-     * @this wol.MapViewer
+     * @this tmap.Map
      * @param {number} curZIndex
      */
     this.setCurZIndex = function (curZIndex) {
