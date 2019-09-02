@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TAbcMap</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/css" src="../../dist/css/tmap.min.js"></script>
+    <script type="text/javascript" src="../../dist/js/tmap.js"></script>
+    <style type="text/css">
+        #map {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+    </div>
+</body>
+<script type="text/javascript">
+    var map = new tmap.Map("map", {
+        zoom: 12,
+        layers: [{ type: 'abcmap' }]
+    })
+</script>
+
+</html>

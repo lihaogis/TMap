@@ -1,5 +1,6 @@
 tmap.mapGroup = {
-}
+};
+
 //自定义地图
 tmap.mapGroup.selfmap = function (opt_options) {
     return new ol.layer.Tile({
